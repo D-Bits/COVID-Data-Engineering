@@ -55,7 +55,7 @@ def load(**context):
     # Fetch SQL Alchemy connection string from .env file
     db_conn = getenv("SQL_ALCHEMY_CONN")
     # Dump df to csv, and then load into db
-    received_value.to_sql('nation_history', db_conn, index_label="id", schema='covid', if_exists='append')
+    received_value.to_sql('nation_history', db_conn, index_label="id", schema='covid', method='multi', if_exists='append')
 
 
 with dag:
