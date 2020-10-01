@@ -9,16 +9,15 @@ CREATE SCHEMA covid;
 CREATE TABLE covid.nation_history
 (
 	id SERIAL,
-	recorded_date INT,
-	cases INT NOT NULL, 
-	deaths INT NOT NULL,
-	new_deaths INT NOT NULL,
-	deaths_increase INT NOT NULL,
-	hospitalized_currently INT NOT NULL,
-	hospitalized_cumulatively INT NOT NULL,
-	hospitalization_increase INT NOT NULL,
-	ventilator_currently INT NOT NULL,
-	ventilator_cumulatively INT NOT NULL,
+	"date" INT,
+	positive INT, 
+	death INT,
+	"deathIncrease" INT,
+	recovered INT,
+	"hospitalizedCurrently" INT,
+	"hospitalizedCumulative" INT,
+	"onVentilatorCurrently" INT,
+	"onVentilatorCumulative" INT,
 	PRIMARY KEY(id)
 );
 
