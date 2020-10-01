@@ -13,17 +13,18 @@ import psycopg2
 
 default_args = {
     "owner": "airflow",
-    "start_date": datetime(2020, 9, 29),
+    "start_date": datetime(2020, 10, 1),
     "retries": 1,
 }
 
-dag = DAG("update_national", default_args=default_args, schedule_interval=None)
+dag = DAG("update_national", default_args=default_args, schedule_interval="@daily")
 
 def etl():
 
     data = get("https://api.covidtracking.com/v1/us/daily.json").json()
 
-    df = pd.DataFrame(data, index=None).drop([
+    # Drop undesired fields, ensure only the most recent record is written to db
+    df = pd.DataFrame(data, index=None).head(n=1).drop([
         'inIcuCurrently',
         'inIcuCumulative',
         'totalTestResults',
@@ -40,16 +41,6 @@ def etl():
         'totalTestResultsIncrease',
         'hash'
     ], axis=1)
-
-
-    # Connect to db
-    conn = psycopg2.connect(
-        dbname="airflow",
-        user='airflow',
-        password='airflow',
-        host='postgres',
-        port=5432
-    )
 
     # Fetch SQL Alchemy connection string from .env file
     db_conn = getenv("SQL_ALCHEMY_CONN")
