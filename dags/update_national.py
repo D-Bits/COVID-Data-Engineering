@@ -19,11 +19,12 @@ default_args = {
 
 dag = DAG("update_national", default_args=default_args, schedule_interval="@daily")
 
-def etl():
+def extract_transform(**context):
 
     data = get("https://api.covidtracking.com/v1/us/daily.json").json()
 
     # Drop undesired fields, ensure only the most recent record is written to db
+    # Remove .head(n=1) for initial seeding of db
     df = pd.DataFrame(data, index=None).head(n=1).drop([
         'inIcuCurrently',
         'inIcuCumulative',
@@ -42,12 +43,24 @@ def etl():
         'hash'
     ], axis=1)
 
+    # Create an XCOM for this task to be used in load()
+    context['ti'].xcom_push(key="df", value=df)
+
+
+def load(**context):
+
+    # Fetch the cleaned DataFrame from the above XCOM
+    received_value = context["ti"].xcom_pull(key="df")
+
     # Fetch SQL Alchemy connection string from .env file
     db_conn = getenv("SQL_ALCHEMY_CONN")
-    
     # Dump df to csv, and then load into db
-    df.to_sql('nation_history', db_conn, index_label="id", schema='covid', if_exists='append')
+    received_value.to_sql('nation_history', db_conn, index_label="id", schema='covid', if_exists='append')
+
 
 with dag:
 
-    t1 = PythonOperator(task_id="etl", python_callable=etl)
+    t1 = PythonOperator(task_id="extract_transform", python_callable=extract_transform, provide_context=True)
+    t2 = PythonOperator(task_id="load", python_callable=load, provide_context=True)
+
+    t1 >> t2
