@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from requests import get
+from os import remove
 import pandas as pd
 import psycopg2
 
@@ -22,12 +23,13 @@ def etl():
 
     data = get("https://api.covidtracking.com/v1/us/daily.json").json()
 
-    df = pd.DataFrame(data).drop([
+    df = pd.DataFrame(data, index=None).drop([
         'inIcuCurrently',
         'inIcuCumulative',
         'totalTestResults',
         'lastModified',
-        'dateChecked',
+        'date',
+        'hospitalizedCurrently',
         'total',
         'pending',
         'negative',
@@ -40,7 +42,6 @@ def etl():
     ], axis=1)
 
 
-
     # Connect to db
     conn = psycopg2.connect(
         dbname="airflow",
@@ -49,25 +50,12 @@ def etl():
         host='postgres',
         port=5432
     )
+
+    # Fetch SQL Alchemy connection string from .env file
+    db_conn = getenv("SQL_ALCHEMY_CONN")
     
-    with conn.cursor() as curs:
-        # Call a stored proc on the server to update the table
-        curs.callproc(
-            "sp_update_nation_history", [
-                (df['date']),
-                df['positive'],
-                df['death'],
-                df['deathIncrease'],
-                df['recovered'],
-                df['hospitalizedCurrently'],
-                df['hospitalizedCumulative'],
-                df['onVentilatorCurrently'],
-                df['onVentilatorCumulative']
-            ]
-        )
-    # Commit the transaction to the db, and close the connection
-    curs.commit()
-    curs.close()
+    # Dump df to csv, and then load into db
+    df.to_sql('nation_history', db_conn, index_label="id", schema='covid', if_exists='append')
 
 with dag:
 

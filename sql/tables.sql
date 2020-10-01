@@ -14,8 +14,9 @@ CREATE TABLE covid.nation_history
 	death INT,
 	"deathIncrease" INT,
 	recovered INT,
-	"hospitalizedCurrently" INT,
-	"hospitalizedCumulative" INT,
+	hospitalized INT,
+	"hospitalizedIncrease" INT,
+	"hospitalizedCumulative" INT, 
 	"onVentilatorCurrently" INT,
 	"onVentilatorCumulative" INT,
 	PRIMARY KEY(id)
