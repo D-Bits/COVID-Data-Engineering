@@ -50,12 +50,19 @@ def extract_transform(**context):
 def load(**context):
 
     # Fetch the cleaned DataFrame from the above XCOM
-    received_value = context["ti"].xcom_pull(key="df")
+    df = context["ti"].xcom_pull(key="df")
 
     # Fetch SQL Alchemy connection string from .env file
     db_conn = getenv("SQL_ALCHEMY_CONN")
     # Dump df to csv, and then load into db
-    received_value.to_sql('nation_history', db_conn, index_label="id", schema='covid', method='multi', if_exists='append')
+    df.to_sql(
+        'nation_history', 
+        db_conn, 
+        index=False, 
+        schema='covid', 
+        method='multi', 
+        if_exists='append'
+    )
 
 
 with dag:
