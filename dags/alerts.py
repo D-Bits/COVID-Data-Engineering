@@ -6,7 +6,7 @@ from airflow import DAG
 from airflow.utils.email import send_email
 from airflow.operators.email_operator import EmailOperator, send_email
 from datetime import datetime
-from emails.cases_alert import cases_body
+from emails.alert_bodies import cases_body, deaths_body
 import pandas as pd
 
 
@@ -41,6 +41,16 @@ def alert_cases(**context):
     email = context["ti"].xcom_pull(key="email")
 
     if df["positive"] > 7000000:
+        send_email(email, "U.S. Cases Exceed 7 million", cases_body)
+    else:
+        pass
+
+def alert_cases(**context):
+    # Fetch the cleaned DataFrame from the above XCOM
+    df = context["ti"].xcom_pull(key="df")
+    email = context["ti"].xcom_pull(key="email")
+
+    if df["death"] > 7000000:
         send_email(email, "U.S. Cases Exceed 7 million", cases_body)
     else:
         pass
