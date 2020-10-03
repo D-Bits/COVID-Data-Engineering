@@ -4,7 +4,8 @@ Workflow to send an email anytime nationwide cases exceed a certain number.
 from os import getenv
 from airflow import DAG
 from airflow.utils.email import send_email
-from airflow.operators.email_operator import EmailOperator, send_email
+from airflow.operators.email_operator import send_email
+from airflow.operators.python_operator import PythonOperator
 from datetime import datetime
 from emails.alert_bodies import cases_body, deaths_body
 import pandas as pd
@@ -40,17 +41,23 @@ def alert_cases(**context):
     df = context["ti"].xcom_pull(key="df")
     email = context["ti"].xcom_pull(key="email")
 
-    if df["positive"] > 7000000:
+    if int(df["positive"]) > 7000000:
         send_email(email, "U.S. Cases Exceed 7 million", cases_body)
     else:
         pass
 
-def alert_cases(**context):
+
+def alert_deaths(**context):
     # Fetch the cleaned DataFrame from the above XCOM
     df = context["ti"].xcom_pull(key="df")
     email = context["ti"].xcom_pull(key="email")
 
-    if df["death"] > 7000000:
+    if int(df["death"] > 200000):
         send_email(email, "U.S. Cases Exceed 7 million", cases_body)
     else:
         pass
+
+
+with dag:
+
+    t1 = PythonOperator(task_id="alert_cases", python_callable=alert_cases, provide_context=True)
