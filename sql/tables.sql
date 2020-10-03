@@ -9,7 +9,7 @@ CREATE SCHEMA covid;
 CREATE TABLE covid.nation_history
 (
 	id SERIAL,
-	"date" INT,
+	"dateChecked" TIMESTAMP,
 	positive INT, 
 	death INT,
 	"deathIncrease" INT,
