@@ -3,10 +3,10 @@
 */
 
 -- Create a new schema to contain tables for covid data
-CREATE SCHEMA covid;
+CREATE SCHEMA usa;
 
 -- Table for nationwide data history
-CREATE TABLE covid.nation_history
+CREATE TABLE usa.nation_history
 (
 	id SERIAL,
 	"dateChecked" TIMESTAMP,
@@ -23,7 +23,7 @@ CREATE TABLE covid.nation_history
 );
 
 -- State COVID data history
-CREATE TABLE covid.state_history
+CREATE TABLE usa.state_history
 (
 	id SERIAL,
 	state_name VARCHAR(255) NOT NULL,
