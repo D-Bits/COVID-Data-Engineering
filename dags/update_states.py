@@ -15,7 +15,7 @@ default_args = {
     "retries": 1,
 }
 
-dag = DAG('UpdateStates', default_args=default_args, schedule_interval="@daily")
+dag = DAG('update_states', default_args=default_args, schedule_interval="@daily")
 
 def extract_transform(**context):
 

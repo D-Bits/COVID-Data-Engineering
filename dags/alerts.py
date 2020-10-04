@@ -18,7 +18,7 @@ default_args = {
 }
 
 
-dag = DAG("Alerts", default_args=default_args, schedule_interval="@daily")
+dag = DAG("us_alerts", default_args=default_args, schedule_interval="@daily")
 
 
 # Read data from "covid.nation_history" table

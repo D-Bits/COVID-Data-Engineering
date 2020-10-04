@@ -1,5 +1,5 @@
 """
-Update summary of national data table.
+Update summary of national data table in Postgres.
 """
 from os import getenv
 from datetime import datetime, timedelta
@@ -17,7 +17,7 @@ default_args = {
     "retries": 1,
 }
 
-dag = DAG("update_national", default_args=default_args, schedule_interval="@daily")
+dag = DAG("update_us_national", default_args=default_args, schedule_interval="@daily")
 
 def extract_transform(**context):
 
@@ -25,7 +25,7 @@ def extract_transform(**context):
 
     # Drop undesired fields, ensure only the most recent record is written to db
     # Remove .head(n=1) for initial seeding of db
-    df = pd.DataFrame(data, index=None).head(n=1).drop([
+    df = pd.DataFrame(data, index=None).drop([
         'inIcuCurrently',
         'inIcuCumulative',
         'totalTestResults',
@@ -59,7 +59,7 @@ def load(**context):
         'nation_history', 
         db_conn, 
         index=False, 
-        schema='covid', 
+        schema='usa', 
         method='multi', 
         if_exists='append'
     )
