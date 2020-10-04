@@ -38,6 +38,7 @@ def extract_transform(**context):
         'positiveTestsAntigen',
         'pending',
         'totalTestResults',
+        'dateModified',
         'commercialScore',	
         'negativeRegularScore',
         'negativeScore',	
@@ -51,6 +52,7 @@ def extract_transform(**context):
         'negativeTestsViral',
         'positiveCasesViral',
         'total',
+        'date',
         'hash'
     ], axis=1)
 
