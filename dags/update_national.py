@@ -25,7 +25,7 @@ def extract_transform(**context):
 
     # Drop undesired fields, ensure only the most recent record is written to db
     # Remove .head(n=1) for initial seeding of db
-    df = pd.DataFrame(data, index=None).drop([
+    df = pd.DataFrame(data, index=None).head(n=1).drop([
         'inIcuCurrently',
         'inIcuCumulative',
         'totalTestResults',
