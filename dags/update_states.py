@@ -78,8 +78,7 @@ def load(**context):
 
 with dag:
 
-    t1 = PythonOperator('extract_transform', python_callable=extract_transform, provide_context=True)
-    t2 = PythonOperator('load', python_callable=load, provide_context=True)
-
+    t1 = PythonOperator(task_id='extract_transform', python_callable=extract_transform, provide_context=True)
+    t2 = PythonOperator(task_id='load', python_callable=load, provide_context=True)
 
     t1 >> t2

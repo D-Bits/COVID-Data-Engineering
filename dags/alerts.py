@@ -18,7 +18,7 @@ default_args = {
 }
 
 
-dag = DAG("alerts", default_args=default_args, schedule_interval="@daily")
+dag = DAG("Alerts", default_args=default_args, schedule_interval="@daily")
 
 
 # Read data from "covid.nation_history" table
@@ -37,22 +37,24 @@ def extract(**context):
 
 
 def alert_cases(**context):
+
     # Fetch the cleaned DataFrame from the above XCOM
     df = context["ti"].xcom_pull(key="df")
     email = context["ti"].xcom_pull(key="email")
 
-    if int(df["positive"]) > 7000000:
+    if df.head(n=1).loc[df['positive'] > 7000000, 'More than 7 million cases'] == True:
         send_email(email, "U.S. Cases Exceed 7 million", cases_body)
     else:
         pass
 
 
 def alert_deaths(**context):
+
     # Fetch the cleaned DataFrame from the above XCOM
     df = context["ti"].xcom_pull(key="df")
     email = context["ti"].xcom_pull(key="email")
 
-    if int(df["death"] > 200000):
+    if df.head(n=1).loc[df['positive'] > 200000, 'More than 7 million cases'] == True:
         send_email(email, "U.S. Cases Exceed 7 million", cases_body)
     else:
         pass
@@ -60,4 +62,9 @@ def alert_deaths(**context):
 
 with dag:
 
-    t1 = PythonOperator(task_id="alert_cases", python_callable=alert_cases, provide_context=True)
+    t1 = PythonOperator(task_id="extract", python_callable=extract, provide_context=True)
+    t2 = PythonOperator(task_id="alert_cases", python_callable=alert_cases, provide_context=True)
+    t3 = PythonOperator(task_id="alert_deaths", python_callable=alert_deaths, provide_context=True)
+
+
+t1 >> t2 >> t3
