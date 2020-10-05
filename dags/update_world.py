@@ -5,6 +5,7 @@ from os import getenv
 from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
+from sqlalchemy.types import TIMESTAMP, VARCHAR
 from requests import get
 from os import remove
 import pandas as pd
@@ -19,6 +20,13 @@ default_args = {
 
 dag = DAG("update_world", default_args=default_args, schedule_interval="@daily")
 
+
+# To be used with df.to_sql()
+data_types = {
+    "Date": TIMESTAMP(),
+    "CountryCode": VARCHAR(length=2),
+    "Country": VARCHAR(length=255),
+}
 
 def extract_transform(**context):
 
@@ -47,7 +55,8 @@ def load(**context):
         index=False, 
         schema='world', 
         method='multi', 
-        if_exists='replace'
+        if_exists='replace',
+        dtype=data_types
     )
 
 
