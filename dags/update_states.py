@@ -45,6 +45,8 @@ def extract_transform(**context):
         'positiveScore',	
         'score',	
         'grade',
+        'dataQualityGrade',
+        'negative',
         'fips',
         'totalTestResultsSource',
         'onVentilatorCumulative',
@@ -55,6 +57,9 @@ def extract_transform(**context):
         'date',
         'hash'
     ], axis=1)
+
+    # Drop duplicate dates
+    df.drop_duplicates(subset=['dateChecked'])
 
     # Create an XCOM for this task to be used in load()
     context['ti'].xcom_push(key="df", value=df)
