@@ -9,7 +9,7 @@
 */
 
 -- Table for nationwide data history
-CREATE TABLE usa.nation_history
+CREATE TABLE IF NOT EXISTS usa.nation_history
 (
 	id SERIAL,
 	"dateChecked" TIMESTAMP,
@@ -29,7 +29,7 @@ CREATE TABLE usa.nation_history
 /*
 * World data table(s)
 */
-CREATE TABLE world.current_summary
+CREATE TABLE IF NOT EXISTS world.global_summary
 (
     id SERIAL,
     "Country" VARCHAR(255) NOT NULL,
