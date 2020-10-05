@@ -4,9 +4,8 @@
 
 CREATE DATABASE covid;
 
--- Create a new schema to contain tables for covid data
+-- Create a new schema to contain tables for U.S. data
 CREATE SCHEMA usa;
-
 
 /*
 * U.S. data table(s)
@@ -30,6 +29,16 @@ CREATE TABLE usa.nation_history
 );
 
 
+-- Create a new schema to contain tables for U.S. data
+CREATE SCHEMA world;
+
 /*
 * World data table(s)
 */
+CREATE TABLE world.current_summary
+(
+    id SERIAL,
+    country VARCHAR(255),
+	
+    PRIMARY KEY(id)
+);
