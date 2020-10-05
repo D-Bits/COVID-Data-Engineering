@@ -2,8 +2,15 @@
 * Build necessary tables for the db
 */
 
+CREATE DATABASE covid;
+
 -- Create a new schema to contain tables for covid data
 CREATE SCHEMA usa;
+
+
+/*
+* U.S. data table(s)
+*/
 
 -- Table for nationwide data history
 CREATE TABLE usa.nation_history
@@ -22,10 +29,7 @@ CREATE TABLE usa.nation_history
 	PRIMARY KEY(id)
 );
 
--- State COVID data history
-CREATE TABLE usa.state_history
-(
-	id SERIAL,
-	state_name VARCHAR(255) NOT NULL,
-	
-);
+
+/*
+* World data table(s)
+*/
