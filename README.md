@@ -23,5 +23,5 @@ The following software must be installed before going further:
     - `POSTGRES_DB=airflow`
     - `POSTGRES_HOST=postgres`
     - `POSTGRES_PORT=5432`
-    - `SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/airflow`
+    - `SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/covid`
     - `EMAIL_ADRESS=(your email address)`
