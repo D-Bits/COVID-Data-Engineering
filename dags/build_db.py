@@ -21,7 +21,7 @@ with dag:
     # Get SQLA conn string
     conn = getenv("SQL_ALCHEMY_CONN")
 
-    t1 = PostgresOperator(task_id="create_db", sql="sql/init.sql", postgres_conn_id='postgres_default', database="airflow")
-    t2 = PostgresOperator(task_id="create_tables", sql="sql/tables.sql", postgres_conn_id='postgres_default', database="covid")
+    t1 = PostgresOperator(task_id="create_db", sql="sql/init.sql", postgres_conn_id='postgres_main', database="airflow", autocommit=True)
+    t2 = PostgresOperator(task_id="create_tables", sql="sql/tables.sql", postgres_conn_id='postgres_main', database="covid", autocommit=True)
 
     t1 >> t2
