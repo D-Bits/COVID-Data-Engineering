@@ -16,7 +16,7 @@ services:
                 max-size: 10m
                 max-file: "3"
         volumes: 
-            - uscovid:/var/lib/postgresql/data/
+            - covid:/var/lib/postgresql/data/
         networks: 
             [covid_network]
 
@@ -46,4 +46,4 @@ services:
             [covid_network]
 
 volumes: 
-    uscovid:
+    covid:
