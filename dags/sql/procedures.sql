@@ -1,4 +1,4 @@
-CREATE OR REPLACE PROCEDURE sp_update_nation_history
+CREATE OR REPLACE PROCEDURE sp_update_states_data
 (
 	present_date INT,
 	present_cases INT, 

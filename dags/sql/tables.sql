@@ -2,10 +2,7 @@
 * Build necessary tables for the db
 */
 
-CREATE DATABASE covid;
 
--- Create a new schema to contain tables for U.S. data
-CREATE SCHEMA usa;
 
 /*
 * U.S. data table(s)
@@ -29,16 +26,20 @@ CREATE TABLE usa.nation_history
 );
 
 
--- Create a new schema to contain tables for U.S. data
-CREATE SCHEMA world;
-
 /*
 * World data table(s)
 */
 CREATE TABLE world.current_summary
 (
     id SERIAL,
-    country VARCHAR(255),
-	
+    "Country" VARCHAR(255) NOT NULL,
+	"NewConfirmed" INT NOT NULL,
+    "TotalConfirmed" INT NOT NULL,
+    "NewDeaths" INT NOT NULL,
+    "TotalDeaths" INT NOT NULL,
+    "NewRecovered" INT NOT NULL,
+    "TotalRecovered" INT NOT NULL,
+    "Date" TIMESTAMP,
+	"CountryCode" VARCHAR(2),
     PRIMARY KEY(id)
 );
