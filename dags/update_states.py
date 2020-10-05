@@ -72,7 +72,7 @@ def load(**context):
         'states_current', 
         db_conn, 
         index=False, 
-        schema='covid', 
+        schema='usa', 
         method='multi', 
         if_exists='replace'
     )
