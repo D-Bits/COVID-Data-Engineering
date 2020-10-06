@@ -36,10 +36,10 @@ The following software must be installed before going further:
 
     - `Conn Id`: A name for to connection to the containerized Postgres instance (Ex: "*postgres_main*").
     - `Conn Type`: Postgres
-    - `Host`: postgres
+    - `Host`: postgres (from .env file)
     - `Schema`: public
-    - `Login`: (DB username)
-    - `Password`: (DB password)
+    - `Login`: (DB username from .env file)
+    - `Password`: (DB password from .env file)
     - `Port`: 5432
 
 **Initializing the DB**
