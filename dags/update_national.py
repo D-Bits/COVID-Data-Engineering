@@ -19,9 +19,18 @@ default_args = {
 
 dag = DAG("update_us_national", default_args=default_args, schedule_interval="@daily")
 
-def extract_transform(**context):
+
+def extract(**context):
 
     data = get("https://api.covidtracking.com/v1/us/daily.json").json()
+    # Create an XCOM for this task to be used in load()
+    context['ti'].xcom_push(key="data", value=data)
+
+
+def transform(**context):
+
+    # Fetch the JSON data from the above XCOM
+    data = context["ti"].xcom_pull(key="data")
 
     # Drop undesired fields, ensure only the most recent record is written to db
     # Remove .head(n=1) for initial seeding of db
@@ -73,7 +82,9 @@ def load(**context):
 
 with dag:
 
-    t1 = PythonOperator(task_id="extract_transform", python_callable=extract_transform, provide_context=True)
-    t2 = PythonOperator(task_id="load", python_callable=load, provide_context=True)
+    t1 = PythonOperator(task_id="extract", python_callable=extract, provide_context=True)
+    t2 = PythonOperator(task_id="transform", python_callable=transform, provide_context=True)
+    t3 = PythonOperator(task_id="load", python_callable=load, provide_context=True)
+    
 
-    t1 >> t2
+    t1 >> t2 >> t3
