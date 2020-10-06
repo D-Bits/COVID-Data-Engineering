@@ -28,9 +28,17 @@ data_types = {
     "Country": VARCHAR(length=255),
 }
 
-def extract_transform(**context):
+def extract(**context):
 
     data = get("https://api.covid19api.com/summary").json()
+    # Create an XCOM for this task to be used in transform()
+    context['ti'].xcom_push(key="data", value=data)
+
+
+def transform(**context):
+
+    # Fetch the JSON data from the above XCOM
+    data = context["ti"].xcom_pull(key="data")
 
     df = pd.DataFrame(data["Countries"], index=None)
     # Clean data
@@ -62,7 +70,8 @@ def load(**context):
 
 with dag:
 
-    t1 = PythonOperator(task_id="extract_transform", python_callable=extract_transform, provide_context=True)
-    t2 = PythonOperator(task_id="load", python_callable=load, provide_context=True)
+    t1 = PythonOperator(task_id="extract_transform", python_callable=extract, provide_context=True)
+    t2 = PythonOperator(task_id="transform", python_callable=transform, provide_context=True)
+    t3 = PythonOperator(task_id="load", python_callable=load, provide_context=True)
 
-    t1 >> t2
+    t1 >> t2 >> t3

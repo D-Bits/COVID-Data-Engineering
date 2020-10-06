@@ -23,7 +23,7 @@ dag = DAG("update_us_national", default_args=default_args, schedule_interval="@d
 def extract(**context):
 
     data = get("https://api.covidtracking.com/v1/us/daily.json").json()
-    # Create an XCOM for this task to be used in load()
+    # Create an XCOM for this task to be used in transform()
     context['ti'].xcom_push(key="data", value=data)
 
 
