@@ -34,7 +34,7 @@ The following software must be installed before going further:
 - Click `Create`.
 - Enter the following values for the fields:
 
-    - `Conn Id`: A name for to connection to the containerized Postgres instance.
+    - `Conn Id`: A name for to connection to the containerized Postgres instance (Ex: "*postgres_main*").
     - `Conn Type`: Postgres
     - `Host`: postgres
     - `Schema`: public
@@ -45,3 +45,9 @@ The following software must be installed before going further:
 **Initializing the DB**
 
 Once you have Postgres added to `Connections`, you can then run the `build_db` DAG to create the database, along with the appropriate schemas and tables.
+
+## DAG Descriptions
+
+- `build_db`: To create the database, and tables for it. Run this before all other DAGs.
+- `update_states`: Update state-specific data for all U.S. states and territories.
+- `update_us_national`: Update nation-wide data for the United States.
