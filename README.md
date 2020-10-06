@@ -26,7 +26,7 @@ The following software must be installed before going further:
     - `SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/covid`
     - `EMAIL_ADRESS=(your email address)`
 
-**Bootstraping**
+**Bootstrapping**
 
 - Run `docker-compose up -d --build` to bootstrap servers.
 - Navigate to `localhost:8080` in your browser.
@@ -51,3 +51,5 @@ Once you have Postgres added to `Connections`, you can then run the `build_db` D
 - `build_db`: To create the database, and tables for it. Run this before all other DAGs.
 - `update_states`: Update state-specific data for all U.S. states and territories.
 - `update_us_national`: Update nation-wide data for the United States.
+- `update_world`: Update global data, for all countries.
+- `us_alerts`: Email alerts if cases, or deaths go above a certain amount. Not yet working.
