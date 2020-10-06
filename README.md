@@ -1,7 +1,7 @@
 
 # About 
 
-A data engineering project, built with Apache Airflow to monitor U.S. COVID-19 data
+A data engineering project, built with Apache Airflow to monitor COVID-19 data.
 
 ## Running Locally
 
@@ -25,3 +25,23 @@ The following software must be installed before going further:
     - `POSTGRES_PORT=5432`
     - `SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@postgres/covid`
     - `EMAIL_ADRESS=(your email address)`
+
+**Bootstraping**
+
+- Run `docker-compose up -d --build` to bootstrap servers.
+- Navigate to `localhost:8080` in your browser.
+- Under the `Admin` menu, select `Connections`.
+- Click `Create`.
+- Enter the following values for the fields:
+
+    - `Conn Id`: A name for to connection to the containerized Postgres instance.
+    - `Conn Type`: Postgres
+    - `Host`: postgres
+    - `Schema`: public
+    - `Login`: (DB username)
+    - `Password`: (DB password)
+    - `Port`: 5432
+
+**Initializing the DB**
+
+Once you have Postgres added to `Connections`, you can then run the `build_db` DAG to create the database, along with the appropriate schemas and tables.
