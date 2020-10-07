@@ -8,6 +8,8 @@
 * U.S. data table(s)
 */
 
+DROP TABLE IF EXISTS usa.nation_history;
+
 -- Table for nationwide data history
 CREATE TABLE IF NOT EXISTS usa.nation_history
 (
