@@ -10,7 +10,7 @@ services:
         env_file: 
             - ./.env
         ports: 
-            - 543:5432
+            - 54321:5432
         logging:
             options:
                 max-size: 10m
