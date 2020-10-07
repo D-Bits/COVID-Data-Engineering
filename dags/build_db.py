@@ -14,7 +14,7 @@ default_args = {
     "retries": 1,
 }
 
-dag = DAG("build_db", default_args=default_args, schedule_interval=None)
+dag = DAG("build_db", default_args=default_args, schedule_interval=None, template_searchpath=['/usr/local/airflow/sql'], catchup=False)
 
 with dag: 
 
@@ -26,4 +26,4 @@ with dag:
     t3 = PostgresOperator(task_id="create_usa_schema", sql="CREATE SCHEMA usa;", postgres_conn_id='postgres_main', database="covid", autocommit=True)
     t4 = PostgresOperator(task_id="create_tables", sql="sql/tables.sql", postgres_conn_id='postgres_main', database="covid", autocommit=True)
 
-    t1 >> t2 >> t3 >> t4
+    t1 >> [t2, t3] >> t4
