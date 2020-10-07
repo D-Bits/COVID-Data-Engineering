@@ -69,6 +69,5 @@ with dag:
     t3 = PythonOperator(task_id="alert_deaths", python_callable=alert_deaths, provide_context=True)
 
 
-# Execute tasks 2 and 3, after task 1
-t1 >> t2
-t1 >> t3
+# Execute tasks 2 and 3 in parallel, after task 1
+t1 >> [t2, t3]
