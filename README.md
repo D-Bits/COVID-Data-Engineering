@@ -53,3 +53,7 @@ Once you have Postgres added to `Connections`, you can then run the `build_db` D
 - `update_us_national`: Update nation-wide data for the United States.
 - `update_world`: Update global data, for all countries.
 - `us_alerts`: Email alerts if cases, or deaths go above a certain amount. Not yet working.
+
+## Future Goals
+
+- Further normalize data.
