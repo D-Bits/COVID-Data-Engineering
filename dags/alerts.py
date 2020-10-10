@@ -30,7 +30,7 @@ def extract(**context):
     # Get the SQL Alchemy connection string
     conn = getenv("SQL_ALCHEMY_CONN")
     # Load the "nation_history" table
-    df = pd.read_sql_table('nation_history', conn, schema='usa', index_col='id')
+    df = pd.read_sql_table('nation_history', conn, schema='usa')
     today = df.head(n=1)
     # Create an XCOM for this task to be used in alert_cases()
     context['ti'].xcom_push(key="df", value=today)
@@ -62,7 +62,6 @@ def alert_deaths(**context):
 
 
 with dag:
-
     
     t1 = PythonOperator(task_id="extract", python_callable=extract, provide_context=True)
     t2 = PythonOperator(task_id="alert_cases", python_callable=alert_cases, provide_context=True)
