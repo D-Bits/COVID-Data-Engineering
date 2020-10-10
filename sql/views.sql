@@ -3,10 +3,20 @@
 */
 
 
--- Show data for all countries with cases descendind
-CREATE VIEW top_cases AS
+-- Show countries w/ worst cases of COVID-19
+CREATE VIEW world.top_cases AS
 (
     SELECT "Country", "TotalConfirmed", "NewConfirmed"
-    FROM global_summary
-    ORDER BY "TotalConfrimed" DESC
+    FROM world.global_summary
+    ORDER BY "TotalConfirmed" DESC
 );
+
+
+-- Show countries w/ worst death tolls of COVID-19
+CREATE VIEW world.top_deaths AS
+(
+	SELECT "Country", "TotalDeaths", "NewDeaths"
+	FROM world.global_summary 
+	ORDER BY "TotalDeaths" DESC 
+);
+
