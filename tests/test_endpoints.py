@@ -1,3 +1,6 @@
+"""
+Unit tests to ensure API endpoints return 200 responses.
+"""
 from unittest import TestCase
 from requests import get
 
@@ -20,3 +23,7 @@ class TestEndpoints(TestCase):
         endpoint = get("https://api.covidtracking.com/v1/states/current.json").status_code
         self.assertEqual(endpoint, 200)
     
+    def test_countries_summary(self):
+
+        endpoint = get("https://covid.ourworldindata.org/data/owid-covid-data.json").status_code
+        self.assertEqual(endpoint, 200)
