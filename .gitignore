@@ -29,4 +29,4 @@ __pycache__
 env/
 
 testing.ipynb
-config/airflow.cfg
+airflow_settings.yaml
